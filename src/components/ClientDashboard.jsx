@@ -74,6 +74,11 @@ export default function ClientDashboard() {
       <div className="flex-1 flex overflow-hidden">
         {/* Main content — scrolls on mobile, includes summary below table */}
         <div className="flex-1 overflow-y-auto">
+          {/* Summary shown above table on mobile */}
+          <div className="lg:hidden px-3 pt-3">
+            <SummaryCard client={client} />
+          </div>
+
           <div className="p-3 sm:p-6">
             {client.sections.map(section => {
               if (section.id !== currentSectionId) return null;
@@ -82,11 +87,6 @@ export default function ClientDashboard() {
               }
               return <RegularSection key={section.id} clientId={client.id} section={section} />;
             })}
-          </div>
-
-          {/* Summary shown below table on mobile */}
-          <div className="lg:hidden px-3 pb-6">
-            <SummaryCard client={client} />
           </div>
         </div>
 
