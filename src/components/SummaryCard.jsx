@@ -1,3 +1,10 @@
+function getMonthToDateRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const fmt = (d) => d.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' });
+  return `${fmt(start)} – ${fmt(now)}`;
+}
+
 const fmtSGD = (n) =>
   `$${n.toLocaleString('en-SG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -50,7 +57,7 @@ export default function SummaryCard({ client }) {
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
       <div className="bg-indigo-600 px-5 py-4">
         <h3 className="text-white font-semibold text-base">Expense Summary</h3>
-        <p className="text-indigo-200 text-xs mt-0.5">Auto-calculated totals</p>
+        <p className="text-indigo-200 text-xs mt-0.5">{getMonthToDateRange()}</p>
       </div>
       <div className="divide-y divide-gray-100">
         {summaries.map((s, i) => (
