@@ -10,7 +10,6 @@ export default function ClientDashboard() {
   const [activeSection, setActiveSection] = useState(null);
   const [newSectionLabel, setNewSectionLabel] = useState('');
   const [addingSection, setAddingSection] = useState(false);
-  const [showSummary, setShowSummary] = useState(false);
 
   if (!client) {
     return (
@@ -37,9 +36,9 @@ export default function ClientDashboard() {
           {client.sections.map(section => (
             <button
               key={section.id}
-              onClick={() => { setActiveSection(section.id); setShowSummary(false); }}
+              onClick={() => setActiveSection(section.id)}
               className={`px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                currentSectionId === section.id && !showSummary
+                currentSectionId === section.id
                   ? 'border-indigo-600 text-indigo-700'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
@@ -52,15 +51,6 @@ export default function ClientDashboard() {
             className="px-2 sm:px-3 py-3 text-xs sm:text-sm text-gray-400 hover:text-indigo-600 whitespace-nowrap border-b-2 border-transparent"
           >
             + Section
-          </button>
-          {/* Summary tab on mobile */}
-          <button
-            onClick={() => setShowSummary(true)}
-            className={`lg:hidden ml-auto px-3 py-3 text-xs font-medium whitespace-nowrap border-b-2 transition-colors ${
-              showSummary ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-gray-500'
-            }`}
-          >
-            Summary
           </button>
         </div>
       </div>
@@ -82,22 +72,26 @@ export default function ClientDashboard() {
 
       {/* Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Main content */}
-        <div className={`flex-1 overflow-y-auto p-3 sm:p-6 ${showSummary ? 'hidden lg:block' : ''}`}>
-          {client.sections.map(section => {
-            if (section.id !== currentSectionId) return null;
-            if (section.children !== undefined) {
-              return <ChildSection key={section.id} clientId={client.id} section={section} />;
-            }
-            return <RegularSection key={section.id} clientId={client.id} section={section} />;
-          })}
+        {/* Main content — scrolls on mobile, includes summary below table */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-3 sm:p-6">
+            {client.sections.map(section => {
+              if (section.id !== currentSectionId) return null;
+              if (section.children !== undefined) {
+                return <ChildSection key={section.id} clientId={client.id} section={section} />;
+              }
+              return <RegularSection key={section.id} clientId={client.id} section={section} />;
+            })}
+          </div>
+
+          {/* Summary shown below table on mobile */}
+          <div className="lg:hidden px-3 pb-6">
+            <SummaryCard client={client} />
+          </div>
         </div>
 
-        {/* Summary sidebar - desktop always visible, mobile shown via tab */}
-        <div className={`
-          lg:w-80 lg:shrink-0 lg:block overflow-y-auto p-3 sm:p-4 border-l border-gray-200 bg-gray-50
-          ${showSummary ? 'block flex-1' : 'hidden'}
-        `}>
+        {/* Summary sidebar — desktop only */}
+        <div className="hidden lg:block w-80 shrink-0 overflow-y-auto p-4 border-l border-gray-200 bg-gray-50">
           <SummaryCard client={client} />
         </div>
       </div>
