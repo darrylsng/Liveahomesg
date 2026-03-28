@@ -36,7 +36,7 @@ export default function ExpenseTable({ clientId, sectionId, childId, items, labe
           )}
         </div>
       )}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm -mx-3 sm:mx-0">
         <table className="w-full text-sm border-collapse bg-white">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">

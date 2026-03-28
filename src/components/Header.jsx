@@ -1,6 +1,6 @@
 import { useExpense } from '../context/ExpenseContext';
 
-export default function Header() {
+export default function Header({ onMenuClick }) {
   const { state } = useExpense();
   const client = state.clients.find(c => c.id === state.activeClientId);
 
@@ -43,30 +43,40 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-      <div>
-        {client ? (
-          <>
-            <h1 className="text-xl font-bold text-gray-900">{client.name}</h1>
-            <p className="text-sm text-gray-500">Expense Management</p>
-          </>
-        ) : (
-          <h1 className="text-xl font-bold text-gray-900">Expense Tracker</h1>
-        )}
-      </div>
+    <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between gap-3">
       <div className="flex items-center gap-3">
-        {client && (
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Export CSV
-          </button>
-        )}
+        {/* Hamburger menu - mobile only */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden p-1.5 rounded-lg text-gray-500 hover:bg-gray-100"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <div>
+          {client ? (
+            <>
+              <h1 className="text-base font-bold text-gray-900 leading-tight">{client.name}</h1>
+              <p className="text-xs text-gray-500 hidden sm:block">Expense Management</p>
+            </>
+          ) : (
+            <h1 className="text-base font-bold text-gray-900">Expense Tracker</h1>
+          )}
+        </div>
       </div>
+      {client && (
+        <button
+          onClick={handleExport}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors shrink-0"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span className="hidden sm:inline">Export CSV</span>
+          <span className="sm:hidden">Export</span>
+        </button>
+      )}
     </header>
   );
 }
