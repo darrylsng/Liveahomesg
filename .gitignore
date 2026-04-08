@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Environment secrets
+.env
+backend/.env
+
+# Backend data (leads & state are runtime data, not source)
+backend/data/leads.json
+backend/data/state.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
