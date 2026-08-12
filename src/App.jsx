@@ -1,25 +1,35 @@
-import { useState } from 'react';
-import { ExpenseProvider } from './context/ExpenseContext';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import ClientDashboard from './components/ClientDashboard';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AppProvider } from './context/AppContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import ListingsPage from './pages/ListingsPage';
+import PropertyDetailPage from './pages/PropertyDetailPage';
+import AgentDashboard from './pages/AgentDashboard';
+import ListPropertyPage from './pages/ListPropertyPage';
+import MortgagePage from './pages/MortgagePage';
+import SavedPage from './pages/SavedPage';
 
-function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+export default function App() {
   return (
-    <ExpenseProvider>
-      <div className="flex h-screen overflow-hidden bg-gray-50">
-        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-          <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="flex-1 overflow-hidden">
-            <ClientDashboard />
+    <BrowserRouter>
+      <AppProvider>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/listings" element={<ListingsPage />} />
+              <Route path="/property/:id" element={<PropertyDetailPage />} />
+              <Route path="/dashboard" element={<AgentDashboard />} />
+              <Route path="/list-property" element={<ListPropertyPage />} />
+              <Route path="/mortgage" element={<MortgagePage />} />
+              <Route path="/saved" element={<SavedPage />} />
+            </Routes>
           </main>
+          <Footer />
         </div>
-      </div>
-    </ExpenseProvider>
+      </AppProvider>
+    </BrowserRouter>
   );
 }
-
-export default App;
